@@ -171,7 +171,7 @@ NOTES:
  *   Rating: 1
  */
 int bitAnd(int x, int y) {
-   int z = 0;
+   int z=0;
    x = ~x;
    y = ~y ; 
    z = ~(x|y);
