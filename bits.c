@@ -285,8 +285,7 @@ int divpwr2(int x, int n) {
 int negate(int x) {
    int y = 0;
    y = ~x +1;
-   int z = (x | y);
-  return z;
+  return y;
 }
 /* 
  * isPositive - return 1 if x > 0, return 0 otherwise 
