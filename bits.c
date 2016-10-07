@@ -171,6 +171,7 @@ NOTES:
  *   Rating: 1
  */
 int bitAnd(int x, int y) {
+   /* description*/
    int z=0;
    x = ~x;
    y = ~y ; 
@@ -186,6 +187,7 @@ int bitAnd(int x, int y) {
  *   Rating: 2
  */
 int getByte(int x, int n) {
+   /*description*/
    return (x >> (n << 3)) & 0xff;
 }
 /* 
@@ -197,7 +199,7 @@ int getByte(int x, int n) {
  *   Rating: 3 
  */
 int logicalShift(int x, int n) {
-  
+  /*description*/
   return ((x >> n) & ((1 << ((~n + 1) + 32)) + ~0));
  
 }
@@ -209,7 +211,17 @@ int logicalShift(int x, int n) {
  *   Rating: 4
  */
 int bitCount(int x) {
-  return 2;
+  /*description*/
+  int coverone = 0x11 | (0x11 <<8);
+  int coverone = coverone | (coverone << 16);
+  int add = x & covertwo;
+  add = add + ((x>>1) & cover2;
+  add = add + ((x>>2) & cover2;
+  add = add + ((x>>3) & cover2;
+  add = add + (add >> 16);
+  coverone = 0xF | (0xF << 8);
+  add = (add & coverone) + ((add >> 4) & coverone);             
+  return ((add + (add >> 8)) & 0x3F);
 }
 /* 
  * bang - Compute !x without using !
@@ -219,7 +231,10 @@ int bitCount(int x) {
  *   Rating: 4 
  */
 int bang(int x) {
-  return 2;
+   /*description*/
+   int negative_val_x = ~x + 1;
+   
+  return ((((x >> 31) & 1) | ((negative_val_x >> 31) & 0x01)) ^ 1);
 }
 /* 
  * tmin - return minimum two's complement integer 
