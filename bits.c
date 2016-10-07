@@ -1,7 +1,7 @@
 /* 
  * CS:APP Data Lab 
  * 
- * <Adrian Cordova y Quiroz A12010305>
+ * <Adrian Cordova y Quiroz A1201030>
  * 
  * bits.c - Source file with your solutions to the Lab.
  *          This is the file you will hand in to your instructor.
