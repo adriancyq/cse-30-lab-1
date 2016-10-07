@@ -243,7 +243,8 @@ int bang(int x) {
  *   Rating: 1
  */
 int tmin(void) {
-  return 2;
+   /*description*/
+  return 1<<31;
 }
 /* 
  * fitsBits - return 1 if x can be represented as an 
@@ -255,7 +256,8 @@ int tmin(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
-  return 2;
+   int cover = x >> 31;
+  return !(((~x & cover) + (x & ~cover)) >> (n + ~0));
 }
 /* 
  * divpwr2 - Compute x/(2^n), for 0 <= n <= 30
@@ -266,7 +268,10 @@ int fitsBits(int x, int n) {
  *   Rating: 2
  */
 int divpwr2(int x, int n) {
-    return 2;
+    int cover = (1 << n) + ~0;
+    int adjuster = (x >> 31) & cover;
+    
+    return (x + adjuster) >> n;
 }
 /* 
  * negate - return -x 
@@ -278,7 +283,10 @@ int divpwr2(int x, int n) {
  *   Rating: 2
  */
 int negate(int x) {
-  return 2;
+   int y = 0;
+   y = ~x +1;
+   int z = (x | y);
+  return z;
 }
 /* 
  * isPositive - return 1 if x > 0, return 0 otherwise 
@@ -288,7 +296,9 @@ int negate(int x) {
  *   Rating: 3
  */
 int isPositive(int x) {
-  return 2;
+   int pos = 0;
+   int pos = !((x >> 31));
+  return pos;
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
@@ -298,7 +308,15 @@ int isPositive(int x) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-  return 2;
+   int negativeX = ~x + 1;
+   int Ysum = negativeX + y;
+   int Signchecker = Ysum >> 31 & 1;
+   int LSB = 1 << 31;
+   int LeftX = LSB & x;
+   int LeftY = LSB & y;
+   int ExclusiveOr = LeftX ^ LeftY;
+   ExclusiveOr = (ExclusiveOr >> 31) & 1;
+  return (ExclusiveOr & (LeftX >> 31)) | (!Signchecker & !ExclusiveOr);
 }
 /*
  * ilog2 - return floor(log base 2 of x), where x > 0
