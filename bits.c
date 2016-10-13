@@ -344,7 +344,12 @@ int ilog2(int x) {
  *   Rating: 2
  */
 unsigned float_neg(unsigned uf) {
- return 2;
+   /*unedited*/
+   unsigned nonnan = (0x80000000 ^ uf);
+   unsigned curry = 0xff << 23;
+   if((((curry & uf) == curry) && (uf & ((1<<23) + (~0)))) return uf;
+ return nonnan;
+   
 }
 /* 
  * float_i2f - Return bit-level equivalent of expression (float) x
@@ -356,7 +361,48 @@ unsigned float_neg(unsigned uf) {
  *   Rating: 4
  */
 unsigned float_i2f(int x) {
-  return 2;
+   /*undedited except for 0 initialization*/
+   int tx = x;
+   unsigned result = 0;
+   int b = x&0x8000000;
+   int cc = 0x7f;
+   int qtx = 0;
+   int lastbit = 0;
+   int mask = 0;
+   int f, f1, f2, g, h, i , rr, q, lbx;
+   if(x==0) return 0;
+   if(x == 0x80000000) {
+    return 0xcf000000;
+   }
+   result = result | b;
+   if(b) {
+    tx = -x;
+   }
+   qtx = tx;
+   while(qtx/=2) {
+    cc = cc + 1;
+   }
+   lastbit = xx-0x7f;
+   mask = (1<<lastbit) - 1;
+   q = (mask & tx);
+   lbx = 23-lastbit;
+   if(lastbit<=23){
+    result = result + (q<<lbx);
+   } 
+   else {
+    f = -lbx;
+    f1 = f-1;
+    f2 = 1<<f1;
+    g = q & (f2-1);
+    h = q & (1<<(f));
+    i = 1 & (f2);
+    rr = q >> (f);
+    rr = rr + (i && (g || H));
+    result = result | rr;
+   }
+   result = result + (cc<<23);
+   
+  return result;
 }
 /* 
  * float_twice - Return bit-level equivalent of expression 2*f for
@@ -370,6 +416,11 @@ unsigned float_i2f(int x) {
  *   Rating: 4
  */
 unsigned float_twice(unsigned uf) {
-  return 2;
+   if(uf==0 || uf == 0x8000000) return uf;
+   if(((uf>>23) & 0xff) == 0xff) return uf;
+   if(((uf>>23) & 0xff) == 0x00) {
+    return (uf & (1>>31)) | (uf<<1);
+   }
+  return uf + (1<<23);
 }
 
