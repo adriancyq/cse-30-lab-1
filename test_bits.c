@@ -167,7 +167,67 @@ assert(bitAnd(9,8)==test_bitAnd(9,8));
 assert(bitAnd(0,6)==test_bitAnd(0,6));
 assert(bitAnd(255,254)==test_bitAnd(255,254));
 printf("Passed Test Cases for bitAnd\n");
+  
+assert(getByte(0x12345678, 1) == test_getByte(0x12345678, 1));
+assert(getByte(0x88888888, 1) == test_getByte(0x88888888, 1));
+assert(getByte(0x00000000, 1) == test_getByte(0x00000000, 1));
 
+assert(logicalShift(0x87654321, 1) == test_logicalShift(0x87654321, 1));
+assert(logicalShift(0x88888888, 1) == test_logicalShift(0x88888888, 1));
+assert(logicalShift(0x00000000, 1) == test_logicalShift(0x00000000, 1));
+  
+assert(bitCount(5) == test_bitCount(5));
+assert(bitCount(7) == test_bitCount(7));
+assert(bitCount(0) == test_bitCount(0));
+assert(bitCount(10) == test_bitCount(10));
+  
+assert(bang(3) == test_bitCount(3));
+assert(bang(0) == test_bitCount(0));
+assert(bang(1) == test_bitCount(1));
+assert(bang(-1) == test_bitCount(-1));
+  
+assert(tmin == test_tmin);
+
+assert(fitsBits(5,3) == test_fitsBits(5,3));
+assert(fitsBits(-4,3) == test_fitsBits(-4,3));
+assert(fitsBits(-3,2) == test_fitsBits(-3,2));
+assert(fitsBits(6,4) == test_fitsBits(6,4));
+  
+assert(divpwr2(15,1) == test_divpwr2(15,1));
+assert(divpwr2(-33,4) == test_divpwr2(-33,4));
+assert(divpwr2(10,0) == test_divpwr2(10,0));
+assert(divpwr2(64,30) == test_divpwr2(64,30));
+  
+assert(negate(1) == negate(1));
+assert(negate(0) == negate(0));
+assert(negate(-1) == negate(-1));
+  
+assert(isPositive(1) == isPositive(1));
+assert(isPositive(-1) == isPositive(-1));
+assert(isPositive(20) == isPositive(20));
+assert(isPositive(-20) == isPositive(20));
+assert(isPositive(0) == isPositive(0));
+  
+assert(isLessOrEqual(4,5) == isLessOrEqual(4,5));
+assert(isLessOrEqual(0,1) == isLessOrEqual(0,1));
+assert(isLessOrEqual(5,4) == isLessOrEqual(5,4));
+assert(isLessOrEqual(1,0) == isLessOrEqual(1,0));
+  
+assert(ilog2(16) == ilog2(16));
+assert(ilog2(1) == ilog2(1));
+assert(ilog2(5) == ilog2(5));
+  
+assert(float_neg(-1) == float_neg(-1));
+assert(float_neg(-10) == float_neg(-10));
+  
+assert(float_i2f(-1) == float_neg(-1));
+assert(float_i2f(1) == float_neg(1));
+assert(float_i2f(0) == float_neg(0));
+  
+assert(float_twice(-1) == float_twice(-1));
+assert(float_twice(1) == float_twice(1));
+assert(float_twice(0) == float_twice(0));
+assert(float_twice(9) == float_twice(9));
 return 0;
 
 }
