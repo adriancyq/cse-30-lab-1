@@ -213,11 +213,11 @@ int logicalShift(int x, int n) {
 int bitCount(int x) {
   /*description*/
   int coverone = 0x11 | (0x11 <<8);
-  int coverone = coverone | (coverone << 16);
+  int covertwo = coverone | (coverone << 16);
   int add = x & covertwo;
-  add = add + ((x>>1) & cover2;
-  add = add + ((x>>2) & cover2;
-  add = add + ((x>>3) & cover2;
+  add = add + ((x>>1) & covertwo;
+  add = add + ((x>>2) & covertwo;
+  add = add + ((x>>3) & covertwo;
   add = add + (add >> 16);
   coverone = 0xF | (0xF << 8);
   add = (add & coverone) + ((add >> 4) & coverone);             
@@ -296,7 +296,7 @@ int negate(int x) {
  */
 int isPositive(int x) {
    int pos = 0;
-   int pos = !((x >> 31));
+   pos = !((x >> 31));
   return pos;
 }
 /* 
@@ -326,10 +326,10 @@ int isLessOrEqual(int x, int y) {
  */
 int ilog2(int x) {
    unsigned int r, q;
-   q = (x > 0xffff) << 4; x >>= ;
-   r = (x > 0xff) <<3; x>>= r, q |=s;
-   r = (x > 0xf) << 2; x>>=r, q |= s;
-   r = (x > 0x3) << 1; x >>= r, q |= s;
+   q = (x > 0xffff) << 4; x >>= q;
+   r = (x > 0xff) <<3; x>>= r, q |=r;
+   r = (x > 0xf) << 2; x>>=r, q |= r;
+   r = (x > 0x3) << 1; x >>= r, q |= r;
   return (q | (x >>1));
 }
 /* 
@@ -382,7 +382,7 @@ unsigned float_i2f(int x) {
    while(qtx/=2) {
     cc = cc + 1;
    }
-   lastbit = xx-0x7f;
+   lastbit = cc-0x7f;
    mask = (1<<lastbit) - 1;
    q = (mask & tx);
    lbx = 23-lastbit;
@@ -397,7 +397,7 @@ unsigned float_i2f(int x) {
     h = q & (1<<(f));
     i = 1 & (f2);
     rr = q >> (f);
-    rr = rr + (i && (g || H));
+    rr = rr + (i && (g || h));
     result = result | rr;
    }
    result = result + (cc<<23);
