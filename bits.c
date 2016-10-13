@@ -215,9 +215,9 @@ int bitCount(int x) {
   int coverone = 0x11 | (0x11 <<8);
   int covertwo = coverone | (coverone << 16);
   int add = x & covertwo;
-  add = add + ((x>>1) & covertwo;
-  add = add + ((x>>2) & covertwo;
-  add = add + ((x>>3) & covertwo;
+  add = add + ((x>>1) & covertwo);
+  add = add + ((x>>2) & covertwo);
+  add = add + ((x>>3) & covertwo);
   add = add + (add >> 16);
   coverone = 0xF | (0xF << 8);
   add = (add & coverone) + ((add >> 4) & coverone);             
@@ -347,7 +347,9 @@ unsigned float_neg(unsigned uf) {
    /*unedited*/
    unsigned nonnan = (0x80000000 ^ uf);
    unsigned curry = 0xff << 23;
-   if((((curry & uf) == curry) && (uf & ((1<<23) + (~0)))) return uf;
+   if(((curry & uf) == curry) && (uf & ((1<<23) + (~0)))) {
+    return uf;
+   }
  return nonnan;
    
 }
