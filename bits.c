@@ -171,11 +171,12 @@ NOTES:
  *   Rating: 1
  */
 int bitAnd(int x, int y) {
-   /* description*/
-   int z=0;
-   x = ~x;
-   y = ~y ; 
-   z = ~(x|y);
+   //WORKING
+   /* NOR reciprocal of AND*/
+   int z=0; 
+   x = ~x; //logical not X
+   y = ~y ; //logical not Y
+   z = ~(x|y); //logical NOT the OR of x and y)
   return z;
 }
 /* 
@@ -187,8 +188,13 @@ int bitAnd(int x, int y) {
  *   Rating: 2
  */
 int getByte(int x, int n) {
-   /*description*/
-   return (x >> (n << 3)) & 0xff;
+    //WORKING
+   /*returns the number of bytes n in a word x 
+    by shifting n to the left by 31 then shifting
+    x to the right by that and ANDing it with 255*/
+    int three = 3;
+    int TwoFiftyFive = (0xff);
+   return ((x >> (n << three)) & TwoFiftyFive);
 }
 /* 
  * logicalShift - shift x to the right by n, using a logical shift
@@ -199,8 +205,13 @@ int getByte(int x, int n) {
  *   Rating: 3 
  */
 int logicalShift(int x, int n) {
+  //WORKING
   /*description*/
-  return ((x >> n) & ((1 << ((~n + 1) + 32)) + ~0));
+    int ArShift = (x >> n); //arithmetic shift right of x by n
+
+    //converts arithmetic shifts to logical
+    int Conv = ((1 << ((~n + 1) + 32)) + ~0); 
+  return (ArShift & Conv);
  
 }
 /*
@@ -211,16 +222,24 @@ int logicalShift(int x, int n) {
  *   Rating: 4
  */
 int bitCount(int x) {
-  /*description*/
-  int coverone = 0x11 | (0x11 <<8);
+  //WORKING
+  /*counts the number of 1s in a word and returns that value*/
+  //gets 2 LSBs
+  int coverone = 0x11 | (0x11 <<8); 
+  //gets final bytes
   int covertwo = coverone | (coverone << 16);
+  //calulate amount of 1 bits in first 4 bits and stores in add
   int add = x & covertwo;
   add = add + ((x>>1) & covertwo);
   add = add + ((x>>2) & covertwo);
   add = add + ((x>>3) & covertwo);
+  //compensates for higher add value because of 1 bits after byte
   add = add + (add >> 16);
+  //store add and cover next byte.
   coverone = 0xF | (0xF << 8);
-  add = (add & coverone) + ((add >> 4) & coverone);             
+  //adds alternating 4 bits to add and stores them
+  add = (add & coverone) + ((add >> 4) & coverone);   
+  //returns the value and keeps it withing the constraints of the problem          
   return ((add + (add >> 8)) & 0x3F);
 }
 /* 
@@ -231,10 +250,13 @@ int bitCount(int x) {
  *   Rating: 4 
  */
 int bang(int x) {
-   /*description*/
-   int negative_val_x = ~x + 1;
-   
-  return ((((x >> 31) & 1) | ((negative_val_x >> 31) & 0x01)) ^ 1);
+  //WORKING
+   /*reads in x and calculates !x using right shifts and XOR and OR*/
+   //logcial negative conversion of x
+   int neg_val_x = ~x + 1;
+   //MSB of x or -x will be 1 if x does not equal 0
+   //XOR sign bit of -x or x to produce !x
+  return ((((x >> 31) & 1) | ((neg_val_x >> 31) & 0x01)) ^ 1);
 }
 /* 
  * tmin - return minimum two's complement integer 
@@ -243,7 +265,9 @@ int bang(int x) {
  *   Rating: 1
  */
 int tmin(void) {
-   /*description*/
+   //WORKING
+   /*returns the smallest 2s comp integer by shifting the '1' bit
+   to achieve 0x80000000*/
   return 1<<31;
 }
 /* 
@@ -256,8 +280,13 @@ int tmin(void) {
  *   Rating: 2
  */
 int fitsBits(int x, int n) {
-   int cover = x >> 31;
-  return !(((~x & cover) + (x & ~cover)) >> (n + ~0));
+   //WORKING
+   /*cover the sign bit vs ~x and ~cover to grab max bit in x.
+    Shift right n+~0 and not that to check*/
+    int notX = ~x;
+    int cover = x >> 31;
+    int notCover = ~cover;
+  return !(((notX & cover) + (x & notCover)) >> (n + ~0));
 }
 /* 
  * divpwr2 - Compute x/(2^n), for 0 <= n <= 30
@@ -268,9 +297,13 @@ int fitsBits(int x, int n) {
  *   Rating: 2
  */
 int divpwr2(int x, int n) {
+    //WORKING
+    //resolves 2^n -1 
     int cover = (1 << n) + ~0;
+    //shift x right 31 and AND cover for sign bit
     int adjuster = (x >> 31) & cover;
-    
+    //if x was positive adds 0
+    //if x was negative adds 1
     return (x + adjuster) >> n;
 }
 /* 
@@ -283,6 +316,9 @@ int divpwr2(int x, int n) {
  *   Rating: 2
  */
 int negate(int x) {
+    //WORKING
+    /*2s comp definiton states that negation is fulfilled
+    by NOTing and adding 1*/
    int y = 0;
    y = ~x +1;
   return y;
@@ -295,9 +331,14 @@ int negate(int x) {
  *   Rating: 3
  */
 int isPositive(int x) {
-   int pos = 0;
-   pos = !((x >> 31));
-  return pos;
+   //WORKING 
+   //x cannot be positive when less or equal to 0
+   int NegX = (~x + 1);
+   //negate x and sign bit is 0
+   int signBit = ((NegX >> 31) & 1);
+   //x is the smallest number and a sign bit
+   int tmin_checker = !(x ^ (1<<31));
+  return signBit ^ tmin_checker;
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
@@ -307,14 +348,24 @@ int isPositive(int x) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
+   //WORKING
+   //negative value of x
    int negativeX = ~x + 1;
+   //only negative if x is greater than y
    int Ysum = negativeX + y;
+   //sign bit gets shifted all the way to the right
    int Signchecker = Ysum >> 31 & 1;
+   //stores LSB
    int LSB = 1 << 31;
+   //ands LSB and x
    int LeftX = LSB & x;
+   //ands LSB and y
    int LeftY = LSB & y;
+   //ExOR leftX bit and leftY bit 
    int ExclusiveOr = LeftX ^ LeftY;
+   //right shifts ExOr value and ANDs with 1
    ExclusiveOr = (ExclusiveOr >> 31) & 1;
+   //returns 1 if x<=y or else 0
   return (ExclusiveOr & (LeftX >> 31)) | (!Signchecker & !ExclusiveOr);
 }
 /*
@@ -325,7 +376,10 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4
  */
 int ilog2(int x) {
+   //WORKING
+   //initializes unsigned ints r and q
    unsigned int r, q;
+   //shifts x bit left until gets to log base 2 of x and returns floor
    q = (x > 0xffff) << 4; x >>= q;
    r = (x > 0xff) <<3; x>>= r, q |=r;
    r = (x > 0xf) << 2; x>>=r, q |= r;
@@ -344,13 +398,16 @@ int ilog2(int x) {
  *   Rating: 2
  */
 unsigned float_neg(unsigned uf) {
-   /*unedited*/
-   unsigned nonnan = (0x80000000 ^ uf);
-   unsigned curry = 0xff << 23;
-   if(((curry & uf) == curry) && (uf & ((1<<23) + (~0)))) {
+   //WORKING
+  //adjust sign bit of value
+   unsigned changer = (0x80000000 ^ uf);
+   //checks the 8 exponent bits
+   unsigned checker = 0xff << 23;
+   //if exponent bits have 1s
+   if(((checker & uf) == checker) && (uf & ((1<<23) + (~0)))) {
     return uf;
    }
- return nonnan;
+ return changer;
    
 }
 /* 
@@ -363,14 +420,14 @@ unsigned float_neg(unsigned uf) {
  *   Rating: 4
  */
 unsigned float_i2f(int x) {
-   /*undedited except for 0 initialization*/
+   /*undedited*/
    int tx = x;
    unsigned result = 0;
-   int b = x&0x8000000;
+   int b = x&0x80000000;
    int cc = 0x7f;
    int qtx = 0;
-   int lastbit = 0;
-   int mask = 0;
+   int lastbit;
+   int mask;
    int f, f1, f2, g, h, i , rr, q, lbx;
    if(x==0) return 0;
    if(x == 0x80000000) {
@@ -397,7 +454,7 @@ unsigned float_i2f(int x) {
     f2 = 1<<f1;
     g = q & (f2-1);
     h = q & (1<<(f));
-    i = 1 & (f2);
+    i = q & (f2);
     rr = q >> (f);
     rr = rr + (i && (g || h));
     result = result | rr;
@@ -418,11 +475,22 @@ unsigned float_i2f(int x) {
  *   Rating: 4
  */
 unsigned float_twice(unsigned uf) {
-   if(uf==0 || uf == 0x8000000) return uf;
-   if(((uf>>23) & 0xff) == 0xff) return uf;
-   if(((uf>>23) & 0xff) == 0x00) {
-    return (uf & (1>>31)) | (uf<<1);
+   //uf is the 0 case
+   if(uf==0 || uf == 0x8000000){
+    return uf;
+   } 
+   //case if not a number
+   int shifted = (uf >> 23);
+   int shifted2 = (1>>31);
+   int shifted3 = (1<<23);
+   if(((shifted) & 0xff) == 0xff){
+    return uf;
+   } 
+   //small non-zero value
+   if(((shifted) & 0xff) == 0x00) {
+    return (uf & (shifted2)) | (uf<<1);
    }
-  return uf + (1<<23);
+   //or add 1 to exponent value
+  return uf + shifted3;
 }
 

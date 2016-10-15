@@ -41,28 +41,61 @@
 
 int test_bitAnd_ARM(int x, int y)
 {
+   return x&y;
 }
 
 int test_getByte_ARM(int x, int n)
 {
+   unsigned char byte;
+    switch(n) {
+    case 0:
+      byte = x;
+      break;
+    case 1:
+      byte = x >> 8;
+      break;
+    case 2:
+      byte = x >> 16;
+      break;
+    default:
+      byte = x >> 24;
+      break;
+    }
+    return (int) (unsigned) byte;
 }
 
-int test_logicalShift_ARM(int x, int n) {
+int test_logicalShift_ARM(int x, int n) 
+{
+   unsigned u = (unsigned) x;
+  unsigned shifted = u >> n;
+  return (int) shifted;
 }
 
 
-int test_bitCount_ARM(int x) {
+int test_bitCount_ARM(int x) 
+{
+   int result = 0;
+  int i;
+  for (i = 0; i < 32; i++)
+    result += (x >> i) & 0x1;
+  return result;
 }
 
 int test_fitsBits_ARM(int x, int n)
 {
+   int TMin_n = -(1 << (n-1));
+  int TMax_n = (1 << (n-1)) - 1;
+  return x >= TMin_n && x <= TMax_n;
 }
 
-int test_negate_ARM(int x) {
+int test_negate_ARM(int x) 
+{
+   return -x;
 }
 
 int test_isLessOrEqual(int x, int y)
 {
+   return x <= y;
 }
 
 
@@ -76,8 +109,39 @@ assert(bitAnd_ARM(9,8)==test_bitAnd_ARM(9,8));
 assert(bitAnd_ARM(0,6)==test_bitAnd_ARM(0,6));
 assert(bitAnd_ARM(255,254)==test_bitAnd_ARM(255,254));
 printf("Passed Test Cases for bitAnd_ARM\n");
-/* To do: Run other test cases here */
 
+assert(getByte_ARM(0x12345678, 1) == test_getByte_ARM(0x12345678, 1));
+assert(test_getByte_ARM(0x88888888, 1) == test_getByte_ARM(0x88888888, 1));
+assert(test_getByte_ARM(0x00000000, 1) == test_getByte_ARM(0x00000000, 1));
+printf("Passed Test Cases for getByte_ARM\n");
+
+assert(logicalShift_ARM(0x87654321, 1) == test_logicalShift_ARM(0x87654321, 1));
+assert(logicalShift_ARM(0x88888888, 1) == test_logicalShift_ARM(0x88888888, 1));
+assert(logicalShift_ARM(0x00000000, 1) == test_logicalShift_ARM(0x00000000, 1));
+printf("Passed Test Cases for logicalShift_ARM\n");
+
+assert(bitCount_ARM(5) == test_bitCount_ARM(5));
+assert(bitCount_ARM(7) == test_bitCount_ARM(7));
+assert(bitCount_ARM(0) == test_bitCount_ARM(0));
+assert(bitCount_ARM(10) == test_bitCount_ARM(10));
+printf("Passed Test Cases for test_bitCount_ARM\n");
+
+assert(fitsBits_ARM(5,3) == test_fitsBits_ARM(5,3));
+assert(fitsBits_ARM(-4,3) == test_fitsBits_ARM(-4,3));
+assert(fitsBits_ARM(-3,2) == test_fitsBits_ARM(-3,2));
+assert(fitsBits_ARM(6,4) == test_fitsBits_ARM(6,4));
+printf("Passed Test Cases for fitsBits_ARM\n");
+
+assert(negate_ARM(1) == test_negate_ARM(1));
+assert(negate_ARM(0) == test_negate_ARM(0));
+assert(negate_ARM(-1) == test_negate_ARM(-1));
+printf("Passed Test Cases for negate\n");
+
+assert(isLessOrEqual_ARM(4,5) == test_isLessOrEqual(4,5));
+assert(isLessOrEqual_ARM(0,1) == test_isLessOrEqual(0,1));
+assert(isLessOrEqual_ARM(5,4) == test_isLessOrEqual(5,4));
+assert(isLessOrEqual_ARM(1,0) == test_isLessOrEqual(1,0));
+printf("Passed Test Cases for isLessOrEqual\n");
 return 0;
 
 }
