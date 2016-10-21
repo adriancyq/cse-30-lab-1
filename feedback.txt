@@ -1,0 +1,12 @@
+Coding Style:
+Good job on attempting all the functions.Well commented and sufficiently tested
+On floating point functions, you have not tested for special values like Inf, -Inf and NaN.
+
+
+Final C score for Performance	28
+Final C score for Correctness	23.59712195
+Final ARM Score	13.27942857
+Style Score	4.5
+Total Score	69.4
+
+
